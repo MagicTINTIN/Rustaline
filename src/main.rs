@@ -48,6 +48,10 @@ impl EventHandler for Handler {
                     commands::dropdown::run(&ctx, &command).await.unwrap();
                     None
                 }
+                "givemeanimage" => {
+                    commands::givemeanimage::run(&ctx, &command).await.unwrap();
+                    None
+                }
                 _ => Some("not implemented :(".to_string()),
             };
 
@@ -83,7 +87,7 @@ impl EventHandler for Handler {
         let commands =
             // Command::create_global_command(&ctx.http, commands::wonderful_command::register())
                 // .await;
-            Command::set_global_commands(&ctx.http, vec![commands::ping::register(), commands::modal::register(), commands::dropdown::register()],).await;
+            Command::set_global_commands(&ctx.http, vec![commands::ping::register(), commands::modal::register(), commands::dropdown::register(), commands::givemeanimage::register()],).await;
 
         println!("I created the following global slash command: {commands:#?}");
     }
@@ -91,6 +95,8 @@ impl EventHandler for Handler {
 
 #[tokio::main]
 async fn main() {
+    let path = env::current_dir().unwrap();
+    println!("The current directory is {}", path.display());
     // Login with a bot token from the environment
     let token = env::var("DISCORD_TOKEN").expect("Expected a token in the environment");
     // Set gateway intents, which decides what events the bot will be notified about
