@@ -1,5 +1,6 @@
 use std::env;
 
+use serenity::all::ActivityData;
 use serenity::async_trait;
 use serenity::builder::{CreateInteractionResponse, CreateInteractionResponseMessage};
 use serenity::model::application::{Command, Interaction};
@@ -71,6 +72,9 @@ impl EventHandler for Handler {
 
     async fn ready(&self, ctx: Context, ready: Ready) {
         println!("{} is connected!", ready.user.name);
+        // ctx.reset_presence();
+        ctx.set_presence(Some(ActivityData::competing("24h du Rust")), serenity::all::OnlineStatus::DoNotDisturb);
+        // ctx.dnd();
 
         // let guild_id = GuildId::new(
         //     env::var("GUILD_ID")
@@ -112,14 +116,19 @@ async fn main() {
     let token = env::var("DISCORD_TOKEN").expect("Expected a token in the environment");
     // Set gateway intents, which decides what events the bot will be notified about
     let intents = GatewayIntents::GUILD_MESSAGES
-        | GatewayIntents::DIRECT_MESSAGES
-        | GatewayIntents::MESSAGE_CONTENT;
-
+    | GatewayIntents::DIRECT_MESSAGES
+    | GatewayIntents::MESSAGE_CONTENT;
+    
     // Create a new instance of the Client, logging in as a bot.
     let mut client = Client::builder(&token, intents)
-        .event_handler(Handler)
-        .await
-        .expect("Error creating client");
+    .event_handler(Handler)
+    .await
+    .expect("Error creating client");
+    // serenity::builder::EditProfile::avatar(client,avatar);
+    // client.cache.current_user().edit(cache_http, builder)
+    // client.http.edit_profile();
+    
+    
 
     // Start listening for events by starting a single shard
     if let Err(why) = client.start().await {

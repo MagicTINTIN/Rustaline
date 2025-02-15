@@ -6,6 +6,6 @@ edition = "2021"
 
 
 [dependencies]
-serenity = { version = "0.12", features = ["client", "gateway", "rustls_backend", "model", "collector"] }
+serenity = { version = "0.12", features = ["client", "gateway", "rustls_backend", "model", "collector", "http"] }
 tokio = { version = "1.43.0", features = ["macros", "rt-multi-thread"] }
 sys-info = "0.9"

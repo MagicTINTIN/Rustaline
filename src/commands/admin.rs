@@ -1,6 +1,6 @@
 use std::time::Duration;
 
-use serenity::all::{Context, CreateButton, CreateCommand, CreateEmbed};
+use serenity::all::{Context, CreateAttachment, CreateButton, CreateCommand, CreateEmbed, EditProfile, Http};
 use serenity::builder::{CreateInteractionResponse, CreateInteractionResponseMessage};
 
 use serenity::futures::StreamExt;
@@ -40,6 +40,12 @@ async fn log_system_load(ctx: &Context, interaction: &ComponentInteraction) {
     };
 }
 
+// #[cfg(feature = "http")]
+async fn update_pp(http: &Http, current_user: &mut CurrentUser) {
+    let avatar = CreateAttachment::path("./assets/profilepictures/1.jpg").await.expect("Failed to read image.");
+    current_user.edit(http, EditProfile::new().avatar(&avatar)).await.unwrap();
+}
+
 fn button(id: &str, name: &str, emoji: ReactionType) -> CreateButton {
     CreateButton::new(id).emoji(emoji).label(name)
 }
@@ -51,6 +57,10 @@ pub async fn run(ctx: &Context, interaction: &CommandInteraction) -> Result<(), 
             CreateInteractionResponse::Message(
                 CreateInteractionResponseMessage::default()
                     .content(format!("Choose a subcommand"))
+                    .button(button("changepp",
+                        "Update profile picture",
+                        "🖼️".parse().unwrap(),
+                    ))
                     .button(button("perfs",
                         "Server performances",
                         "<:perfs:1340397611051388950>".parse().unwrap(),
@@ -76,6 +86,9 @@ pub async fn run(ctx: &Context, interaction: &CommandInteraction) -> Result<(), 
         // Acknowledge the interaction and send a reply
         if cmd == "perfs" {
             log_system_load(ctx, &interaction).await;
+        } else if cmd == "changepp" {
+            update_pp(&ctx.http, &mut ctx.http.get_current_user().await.unwrap()).await;
+            interaction.defer(ctx).await.unwrap();
         }
     }
 
