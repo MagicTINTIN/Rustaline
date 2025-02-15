@@ -19,7 +19,7 @@ pub async fn run(ctx: &Context, interaction: &CommandInteraction) -> Result<(), 
             CreateInteractionResponse::Message(
                 CreateInteractionResponseMessage::default()
                 .add_file(CreateAttachment::path(path).await.unwrap())
-                .content(format!("user rust")),
+                .content(format!("use rust")),
             ),
         )
         .await

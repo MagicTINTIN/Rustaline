@@ -52,7 +52,11 @@ impl EventHandler for Handler {
                     commands::givemeanimage::run(&ctx, &command).await.unwrap();
                     None
                 }
-                _ => Some("not implemented :(".to_string()),
+                "admin" => {
+                    commands::admin::run(&ctx, &command).await.unwrap();
+                    None
+                }
+                _ => Some("not implemented :/".to_string()),
             };
 
             if let Some(content) = content {
@@ -84,12 +88,19 @@ impl EventHandler for Handler {
 
         // println!("I now have the following guild slash commands: {commands:#?}");
 
-        let commands =
+        let _commands =
             // Command::create_global_command(&ctx.http, commands::wonderful_command::register())
                 // .await;
-            Command::set_global_commands(&ctx.http, vec![commands::ping::register(), commands::modal::register(), commands::dropdown::register(), commands::givemeanimage::register()],).await;
-
-        println!("I created the following global slash command: {commands:#?}");
+            Command::set_global_commands(&ctx.http, 
+                vec![
+                    commands::ping::register(),
+                    commands::modal::register(),
+                    commands::dropdown::register(),
+                    commands::admin::register(),
+                    commands::givemeanimage::register()
+                    ],).await;
+        println!("Slash commands created.")
+        // println!("I created the following global slash command: {commands:#?}");
     }
 }
 
