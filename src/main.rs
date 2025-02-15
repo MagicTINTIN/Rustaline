@@ -44,6 +44,10 @@ impl EventHandler for Handler {
                     commands::modal::run(&ctx, &command).await.unwrap();
                     None
                 }
+                "quiz" => {
+                    commands::dropdown::run(&ctx, &command).await.unwrap();
+                    None
+                }
                 _ => Some("not implemented :(".to_string()),
             };
 
@@ -79,7 +83,7 @@ impl EventHandler for Handler {
         let commands =
             // Command::create_global_command(&ctx.http, commands::wonderful_command::register())
                 // .await;
-            Command::set_global_commands(&ctx.http, vec![commands::ping::register(), commands::modal::register()],).await;
+            Command::set_global_commands(&ctx.http, vec![commands::ping::register(), commands::modal::register(), commands::dropdown::register()],).await;
 
         println!("I created the following global slash command: {commands:#?}");
     }
