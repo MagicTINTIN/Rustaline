@@ -57,6 +57,10 @@ impl EventHandler for Handler {
                     commands::admin::run(&ctx, &command).await.unwrap();
                     None
                 }
+                "gifs" => {
+                    commands::gifs::run(&ctx, &command).await.unwrap();
+                    None
+                }
                 _ => Some("not implemented :/".to_string()),
             };
 
@@ -101,7 +105,8 @@ impl EventHandler for Handler {
                     commands::modal::register(),
                     commands::dropdown::register(),
                     commands::admin::register(),
-                    commands::givemeanimage::register()
+                    commands::givemeanimage::register(),
+                    commands::gifs::register()
                     ],).await;
         println!("Slash commands created.")
         // println!("I created the following global slash command: {commands:#?}");
