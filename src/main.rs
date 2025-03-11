@@ -1,6 +1,6 @@
 use std::env;
 
-use serenity::all::ActivityData;
+use serenity::all::{ActivityData, CreateCommand};
 use serenity::async_trait;
 use serenity::builder::{CreateInteractionResponse, CreateInteractionResponseMessage};
 use serenity::model::application::{Command, Interaction};
@@ -21,6 +21,7 @@ macro_rules! modules {
 
 modules! {
     mod commands;
+    mod contexts;
 }
 
 struct Handler;
@@ -77,7 +78,8 @@ impl EventHandler for Handler {
     async fn ready(&self, ctx: Context, ready: Ready) {
         println!("{} is connected!", ready.user.name);
         // ctx.reset_presence();
-        ctx.set_presence(Some(ActivityData::competing("24h du Rust")), serenity::all::OnlineStatus::DoNotDisturb);
+        ctx.set_presence(Some(ActivityData::custom("miaou ?")), serenity::all::OnlineStatus::DoNotDisturb);
+        // ctx.set_presence(Some(ActivityData::competing("24h du Rust")), serenity::all::OnlineStatus::DoNotDisturb);
         // ctx.dnd();
 
         // let guild_id = GuildId::new(
@@ -108,8 +110,16 @@ impl EventHandler for Handler {
                     commands::givemeanimage::register(),
                     commands::gifs::register()
                     ],).await;
-        println!("Slash commands created.")
+        println!("Slash commands created.");
         // println!("I created the following global slash command: {commands:#?}");
+        // let _context_commands =
+        //     // Command::create_global_command(&ctx.http, commands::wonderful_command::register())
+        //         // .await;
+        //     CreateCommand::contexts(&ctx.http, 
+        //         vec![
+        //             contexts::pingme::register()
+        //             ],).await;
+        // println!("Context commands created.")
     }
 }
 
