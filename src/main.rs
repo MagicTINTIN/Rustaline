@@ -1,6 +1,6 @@
 use std::env;
 
-use serenity::all::{ActivityData, CreateCommand};
+use serenity::all::ActivityData;
 use serenity::async_trait;
 use serenity::builder::{CreateInteractionResponse, CreateInteractionResponseMessage};
 use serenity::model::application::{Command, Interaction};
@@ -21,7 +21,6 @@ macro_rules! modules {
 
 modules! {
     mod commands;
-    mod contexts;
 }
 
 struct Handler;
@@ -60,6 +59,10 @@ impl EventHandler for Handler {
                 }
                 "gifs" => {
                     commands::gifs::run(&ctx, &command).await.unwrap();
+                    None
+                }
+                "save" => {
+                    commands::save::run(&ctx, &command).await;
                     None
                 }
                 _ => Some("not implemented :/".to_string()),
@@ -108,7 +111,8 @@ impl EventHandler for Handler {
                     commands::dropdown::register(),
                     commands::admin::register(),
                     commands::givemeanimage::register(),
-                    commands::gifs::register()
+                    commands::gifs::register(),
+                    commands::save::register()
                     ],).await;
         println!("Slash commands created.");
         // println!("I created the following global slash command: {commands:#?}");
