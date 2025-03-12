@@ -115,7 +115,7 @@ impl EventHandler for Handler {
                     commands::save::register()
                     ],).await;
         println!("Slash commands created.");
-        // println!("I created the following global slash command: {commands:#?}");
+        println!("I created the following global slash command: {_commands:#?}");
         // let _context_commands =
         //     // Command::create_global_command(&ctx.http, commands::wonderful_command::register())
         //         // .await;

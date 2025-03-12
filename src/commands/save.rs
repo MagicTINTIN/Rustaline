@@ -13,7 +13,7 @@ pub async fn run(ctx: &Context, interaction: &CommandInteraction) {
 
 pub fn register() -> CreateCommand {
     CreateCommand::new("save")
-        .description("Save a message in DM")
+        // .description("Save a message in DM")
         .kind(serenity::all::CommandType::Message)
         .contexts(vec![
             serenity::all::InteractionContext::Guild,
